@@ -283,7 +283,7 @@ fn allocate_layer(sector_size: usize) -> Result<MmapMut> {
         .lock()
         .map_anon()
         .and_then(|mut layer| {
-            layer.mlock()?;
+            #[cfg(target_family = "unix")] layer.mlock()?;
             Ok(layer)
         }) {
         Ok(layer) => Ok(layer),
